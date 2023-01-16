@@ -5,33 +5,35 @@ console.log(galleryItems);
 
 const galleryContainer = document.querySelector('.gallery');
 const cardsMarkup = createCard(galleryItems);
+
 galleryContainer.insertAdjacentHTML('beforeend', cardsMarkup);
 
-galleryContainer.addEventListener('click', onClick);
-
-function createCard(images) {
-    return images
-    .map(({preview, original, description}) => {
+function createCard(galleryItems) {
+    return galleryItems
+    .map(({preview, original, description})=>{
         return `
         <a class='gallery__link' href='${original}'>
-        <img class='gallery__img'
+        <img class='gallery__image'
         src='${preview}'
         data-source='${original}'
         alt='${description}'/>
-        </a>`;
+        </a>
+        `;
     })
     .join('');
 }
 
+galleryContainer.addEventListener('click', onClick);
+
 function onClick(event){
     event.preventDefault();
 
-    if (event.target.nodeName !== `IMG`){
+    if(event.target.nodeName !== 'IMG'){
         return;
     }
     const instance = basicLightbox.create(`
     <div class='modal'>
-    <img src="${event.target.dataset.source}" width="800" height="600">
+    <img src='${event.target.dataset.source}'>
     </div>
     `)
     instance.show();
